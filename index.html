@@ -2,31 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Typing Survey</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typing Survey with Stimuli</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h2>Typing Survey</h2>
-    <p class="instruction">Type the following sentence carefully. You have 2 minutes.</p>
-    
-    <div class="sentence-box" id="target-sentence"></div>
-    
-    <textarea id="user-input" placeholder="Type the sentence here..."></textarea>
-    
-    <div class="status">
-      <span>Sentence: <span id="sentence-count">1</span>/10</span>
-      <span>Time Left: <span id="timer">02:00</span></span>
-    </div>
+  <div id="app"></div>
 
-    <button id="submit-btn">Done with Sentence</button>
-    <div class="result" id="result-box"></div>
-  </div>
-
-  <!-- Background Music -->
-  <audio id="background-music" src="assets/calm_music.mp3" autoplay loop></audio>
-
-  <script src="script.js"></script>
+  <script src="stimuli.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -1,73 +1,100 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f6fc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #f5f5f5);
   margin: 0;
+  padding: 0;
+  color: #2c3e50;
 }
 
-.container {
-  background: white;
-  padding: 30px;
-  width: 500px;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-  text-align: center;
+#app {
+  max-width: 750px;
+  margin: 50px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  margin-top: 0;
+  color: #34495e;
+  margin-bottom: 15px;
+  font-size: 1.8em;
 }
 
-.instruction {
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #444;
-}
-
-.sentence-box {
-  font-style: italic;
-  margin: 20px 0;
-  padding: 15px;
-  background: #e8f0fe;
-  border-radius: 6px;
+p {
+  line-height: 1.6;
+  margin-bottom: 1em;
 }
 
 textarea {
   width: 100%;
-  height: 80px;
-  padding: 10px;
-  font-size: 16px;
-  margin-top: 10px;
-  border-radius: 6px;
+  height: 75px;
+  font-size: 1.1em;
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  resize: none;
+  margin-bottom: 20px;
 }
 
-.status {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 0;
+button {
+  padding: 12px 25px;
   font-weight: bold;
-}
-
-#submit-btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #357edd;
+  background-color: #3498db;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 1em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background-color 0.2s ease-in-out;
+  margin-right: 10px;
 }
 
-#submit-btn:hover {
-  background-color: #245dc1;
+button:hover {
+  background-color: #2980b9;
 }
 
-.result {
-  margin-top: 20px;
-  font-weight: bold;
-  color: green;
+#progressBar,
+#sentenceBar {
+  width: 100%;
+  height: 16px;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #2ecc71;
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+#sentenceBar .progress-fill {
+  background-color: #e74c3c;
+}
+
+#sentenceDisplay {
+  background: #dff9fb;
+  color: #34495e;
+  font-style: italic;
+  padding: 15px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 600px) {
+  #app {
+    padding: 20px;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
