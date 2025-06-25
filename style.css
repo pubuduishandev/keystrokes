@@ -17,6 +17,7 @@ body {
 
 h2 {
   color: #34495e;
+  margin-top: -5px;
   margin-bottom: 15px;
   font-size: 1.8em;
 }
@@ -38,6 +39,12 @@ textarea {
   margin-bottom: 20px;
 }
 
+.confirmation {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
 button {
   padding: 12px 25px;
   font-weight: bold;
@@ -54,6 +61,22 @@ button {
 
 button:hover {
   background-color: #2980b9;
+}
+
+.agree {
+  background-color: #2ecc71;
+}
+
+.agree:hover {
+  background-color: #27ae60;
+}
+
+.do-not-agree {
+  background-color: #e74c3c;
+}
+
+.do-not-agree:hover {
+  background-color: #c0392b;
 }
 
 #progressBar,

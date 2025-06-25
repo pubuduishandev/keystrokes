@@ -16,8 +16,10 @@ function showConsent() {
     <p><strong>✅ What is recorded:</strong><br>- Timing of each keystroke<br>- Key pressed/released (NOT the actual content you type)</p>
     <p><strong>🕒 Each session lasts 5 minutes.</strong><br></p>
     <p><strong>Do you consent to participate?</strong><br>
-    <button onclick="startPhase()">I Agree</button>
-    <button onclick="window.close()">I Do Not Agree</button>
+    <div class="confirmation">
+      <button class="agree" onclick="startPhase()">I Agree</button>
+      <button class="do-not-agree" onclick="window.close()">I Do Not Agree</button>
+    </div>
   `;
 }
 
