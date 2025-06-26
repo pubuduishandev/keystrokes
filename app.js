@@ -40,8 +40,8 @@ function showTypingUI() {
     <p><strong>Time Left:</strong> <span id="countdown">00:00</span></p>
     <p><strong>Correct Sentences:</strong> <span id="correctCount">0</span></p>
     <div id="progressBar"><div class="progress-fill" id="fill"></div></div>
-    <div id="sentenceBar" style="display:none;"><div class="progress-fill" id="sentenceFill" style="background:red;"></div></div>
-    <p id="sentenceDisplay" style="background:#add8e6;padding:10px;"></p>
+    <div id="sentenceBar" style="display:none;"><div class="progress-fill" id="sentenceFill"></div></div>
+    <p id="sentenceDisplay"></p>
     <textarea id="textInput"></textarea>
     <br>
     <button onclick="submitSentence()">Done with Sentence</button>
@@ -60,13 +60,27 @@ function logKeyUp(e) {
 
 function nextSentence() {
   const s = stimuli[currentPhase];
+
+  // Clear previous sentence timer if any
+  if (sentenceTimer) {
+    clearInterval(sentenceTimer);
+    sentenceTimer = null;
+  }
+
   currentSentence = s.sentences[Math.floor(Math.random() * s.sentences.length)];
   document.getElementById("sentenceDisplay").textContent = currentSentence;
   document.getElementById("textInput").value = "";
+  document.getElementById("textInput").focus();
+
   if (s.label === "stressed") {
     document.getElementById("sentenceBar").style.display = "block";
     startSentenceTimer();
+  } else {
+    document.getElementById("sentenceBar").style.display = "none";
   }
+
+  // Optional: scroll to top for mobile friendliness
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function submitSentence() {
@@ -79,7 +93,9 @@ function submitSentence() {
       correctCountStressed++;
     }
   }
-  document.getElementById("correctCount").textContent = stimuli[currentPhase].label === "relaxed" ? correctCountRelaxed : correctCountStressed;
+  document.getElementById("correctCount").textContent =
+    stimuli[currentPhase].label === "relaxed" ? correctCountRelaxed : correctCountStressed;
+
   nextSentence();
 }
 
@@ -103,11 +119,19 @@ function startSessionTimer() {
 
 function startSentenceTimer() {
   let remaining = 15;
+
   sentenceTimer = setInterval(() => {
     document.getElementById("sentenceFill").style.width = (100 - (remaining / 15 * 100)) + "%";
+
     if (--remaining < 0) {
       clearInterval(sentenceTimer);
-      nextSentence();
+      const typed = document.getElementById("textInput").value.trim();
+      if (!typed) {
+        nextSentence(); // auto-switch only if empty
+      } else {
+        // Reset timer to give more time to complete
+        startSentenceTimer();
+      }
     }
   }, 1000);
 }
@@ -139,7 +163,6 @@ function saveData() {
   const data = keystrokes.filter(k => k.label === stimuli[currentPhase].label);
   if (!data.length) return;
 
-  // Calculate hold times
   const holdTimes = {};
   for (let i = 0; i < data.length; i++) {
     if (data[i].event === 'down') {
@@ -153,19 +176,16 @@ function saveData() {
     }
   }
 
-  // Flight times between down events
   const downEvents = data.filter(d => d.event === 'down');
   const flightTimes = [null];
   for (let i = 1; i < downEvents.length; i++) {
     flightTimes.push(downEvents[i].time - downEvents[i - 1].time);
   }
 
-  // Typing speed (chars/min)
   const downTimeStamps = downEvents.map(d => d.time);
   const sessionDuration = downTimeStamps.length ? downTimeStamps.at(-1) - downTimeStamps[0] : 0;
   const typingSpeed = sessionDuration > 0 ? (downTimeStamps.length / sessionDuration) * 60000 : 0;
 
-  // Error rate
   const expected = stimuli[currentPhase].sentences.join(" ").toLowerCase().replace(/\s+/g, "");
   const typed = downEvents.map(d => d.key).join("").toLowerCase().replace(/\s+/g, "");
   let errors = 0;
