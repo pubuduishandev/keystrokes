@@ -6,6 +6,8 @@ let sessionTimer, sentenceTimer;
 let correctCountRelaxed = 0;
 let correctCountStressed = 0;
 let backgroundMusic = null;
+let lastSentence = "";
+let autoNextSentenceTimer = null;
 
 const app = document.getElementById("app");
 
@@ -61,13 +63,24 @@ function logKeyUp(e) {
 function nextSentence() {
   const s = stimuli[currentPhase];
 
-  // Clear previous sentence timer if any
+  // Clear previous timers
   if (sentenceTimer) {
     clearInterval(sentenceTimer);
     sentenceTimer = null;
   }
+  if (autoNextSentenceTimer) {
+    clearTimeout(autoNextSentenceTimer);
+    autoNextSentenceTimer = null;
+  }
 
-  currentSentence = s.sentences[Math.floor(Math.random() * s.sentences.length)];
+  let newSentence;
+  do {
+    newSentence = s.sentences[Math.floor(Math.random() * s.sentences.length)];
+  } while (newSentence === lastSentence && s.sentences.length > 1);
+
+  lastSentence = newSentence;
+
+  currentSentence = newSentence;
   document.getElementById("sentenceDisplay").textContent = currentSentence;
   document.getElementById("textInput").value = "";
   document.getElementById("textInput").focus();
@@ -75,6 +88,12 @@ function nextSentence() {
   if (s.label === "stressed") {
     document.getElementById("sentenceBar").style.display = "block";
     startSentenceTimer();
+
+    // Auto show next sentence after 15 seconds
+    autoNextSentenceTimer = setTimeout(() => {
+      // Automatically submit current sentence (if user hasn't done it)
+      submitSentence();
+    }, 15000);
   } else {
     document.getElementById("sentenceBar").style.display = "none";
   }
